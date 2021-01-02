@@ -9,7 +9,7 @@ from tensorflow.keras.models import Sequential, Model
 from tensorflow.keras.layers import Layer
 from tensorflow.keras.layers import Input, Conv2D, Dense, MaxPool2D,  Flatten
 from tensorflow.keras.layers import Attention
-from tensorflow.keras.layers import GlobalAveragePooling2D
+from tensorflow.keras.layers import AveragePooling2D
 
 
 available_attention = ["official", "senet"]
@@ -21,9 +21,7 @@ def senet_attention(input_):
         input_: 2D feature maps with shape (H, W, C)
     """
     num_channels = input_.shape[-1]
-    x = GlobalAveragePooling2D()(input_)
-    x = tf.expand_dims(x, -2)
-    x = tf.expand_dims(x, -2)  # make output shape be (None, 1, 1, C)
+    x = AveragePooling2D()(input_)
     x = Dense(num_channels, activation="relu")(x)
     # The last FC layer generates the scale (or query) tensor
     x = Dense(num_channels, activation="sigmoid")(x)
