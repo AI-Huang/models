@@ -11,7 +11,7 @@ from tensorflow.keras.layers import Input, Conv2D, Dense, MaxPool2D, Activation,
 def LeNet5(input_shape, num_classes):
     """LeNet-5 network built with Keras
     Inputs:
-        input_shape: input shape of the element of the batched data, e.g., (32, 32, 1), (28, 28, 1).
+        input_shape: input shape of the element of the batched data, e.g., (32, 32, 3), (28, 28, 1).
         num_classes: number of top classifiers, e.g., 2, 10.
         attention: attention type, one of["official", "senet"], default None.
     """
@@ -19,15 +19,15 @@ def LeNet5(input_shape, num_classes):
 
     model.add(Input(shape=input_shape))
     model.add(Conv2D(filters=6, kernel_size=(5, 5),
-                     padding="valid", activation="relu"))
-    model.add(MaxPool2D(strides=2))
+                     padding="valid", activation="relu", name="conv2d_1"))
+    model.add(MaxPool2D(strides=2, name="max_pooling2d_1"))
     model.add(Conv2D(filters=16, kernel_size=(5, 5),
-                     padding="valid", activation="relu"))
-    model.add(MaxPool2D(strides=2))
-    model.add(Flatten())
-    model.add(Dense(120, activation="relu"))
-    model.add(Dense(84, activation="relu"))
-    model.add(Dense(10, activation='softmax'))
+                     padding="valid", activation="relu", name="conv2d_2"))
+    model.add(MaxPool2D(strides=2, name="max_pooling2d_2"))
+    model.add(Flatten(name="flatten"))
+    model.add(Dense(120, activation="relu", name="dense_1"))
+    model.add(Dense(84, activation="relu", name="dense_2"))
+    model.add(Dense(10, activation='softmax', name="dense_3"))
 
     model.build()
 
@@ -36,25 +36,27 @@ def LeNet5(input_shape, num_classes):
 
 def LeCunLeNet5(input_shape, num_classes):
     """LeCunLeNet-5 network built with Keras
-    As for LeCun's origin LeNet-5, the activation function is after the pooling layer, and the activation function used is sigmoid.
+    As for LeCun's origin LeNet-5, **the activation function is after the pooling layer**, and the activation function used is sigmoid.
     Inputs:
-        input_shape: input shape of the element of the batched data, e.g., (32, 32, 1), (28, 28, 1).
+        input_shape: input shape of the element of the batched data, e.g., (32, 32, 3), (28, 28, 1).
         num_classes: number of top classifiers, e.g., 2, 10.
         attention: attention type, one of["official", "senet"], default None.
     """
     model = Sequential()
 
     model.add(Input(shape=input_shape))
-    model.add(Conv2D(filters=6, kernel_size=(5, 5), padding="valid"))
+    model.add(Conv2D(filters=6, kernel_size=(
+        5, 5), padding="valid", name="conv2d_1"))
     model.add(MaxPool2D(strides=2))
     model.add(Activation("sigmoid"))
-    model.add(Conv2D(filters=16, kernel_size=(5, 5), padding="valid"))
+    model.add(Conv2D(filters=16, kernel_size=(
+        5, 5), padding="valid", name="conv2d_2"))
     model.add(MaxPool2D(strides=2))
     model.add(Activation("sigmoid"))
     model.add(Flatten())
-    model.add(Dense(120, activation="sigmoid"))
-    model.add(Dense(84, activation="sigmoid"))
-    model.add(Dense(10, activation='softmax'))
+    model.add(Dense(120, activation="sigmoid", name="dense_1"))
+    model.add(Dense(84, activation="sigmoid", name="dense_2"))
+    model.add(Dense(10, activation='softmax', name="dense_3"))
 
     model.build()
 
