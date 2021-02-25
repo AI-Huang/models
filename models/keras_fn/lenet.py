@@ -27,7 +27,7 @@ def LeNet5(input_shape, num_classes):
     model.add(Flatten(name="flatten"))
     model.add(Dense(120, activation="relu", name="dense_1"))
     model.add(Dense(84, activation="relu", name="dense_2"))
-    model.add(Dense(10, activation='softmax', name="dense_3"))
+    model.add(Dense(num_classes, activation='softmax', name="dense_3"))
 
     model.build()
 
@@ -56,7 +56,7 @@ def LeCunLeNet5(input_shape, num_classes):
     model.add(Flatten())
     model.add(Dense(120, activation="sigmoid", name="dense_1"))
     model.add(Dense(84, activation="sigmoid", name="dense_2"))
-    model.add(Dense(10, activation='softmax', name="dense_3"))
+    model.add(Dense(num_classes, activation='softmax', name="dense_3"))
 
     model.build()
 

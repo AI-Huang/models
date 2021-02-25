@@ -45,9 +45,9 @@ def basicblock1(x, filters=64, kernel_size=3, stride=1,
     """A basic residual block.
     From PyTorch: https://github.com/pytorch/vision/blob/master/torchvision/models/resnet.py#L37
 
-    BasicBlock for ResNet18 and ResNet34 according to "Deep residual learning for image recognition"https://arxiv.org/abs/1512.03385.
+    Basicblock for ResNet18 and ResNet34 according to "Deep residual learning for image recognition"https://arxiv.org/abs/1512.03385.
 
-    BasicBlock only has TWO convolution layers.
+    **Basicblock only has TWO convolution layers.**
 
     # Arguments
         x: input tensor.
@@ -145,7 +145,9 @@ def ResNet18Bottleneck(include_top=True,
                        pooling=None,
                        classes=1000,
                        **kwargs):
-    """Instantiates the ResNet18Bottleneck architecture."""
+    """Instantiates the ResNet18Bottleneck architecture.
+    Warning: this would be inexistent ResNet26.
+    """
 
     def stack_fn(x):
         x = stack1(x, 64, 2, stride1=1, name='conv2')
@@ -189,13 +191,15 @@ def ResNet34Bottleneck(include_top=True,
                        pooling=None,
                        classes=1000,
                        **kwargs):
-    """Instantiates the ResNet34Bottleneck architecture."""
+    """Instantiates the ResNet34Bottleneck architecture.
+    Warning: this is actually the same with ResNet50.
+    """
 
     def stack_fn(x):
-        x = stack1(x, 64, 2, stride1=1, name='conv2')
-        x = stack1(x, 128, 2, name='conv3')
-        x = stack1(x, 256, 2, name='conv4')
-        return stack1(x, 512, 2, name='conv5')
+        x = stack1(x, 64, 3, stride1=1, name='conv2')
+        x = stack1(x, 128, 4, name='conv3')
+        x = stack1(x, 256, 6, name='conv4')
+        return stack1(x, 512, 3, name='conv5')
 
     return ResNet(stack_fn, False, True, 'resnet34_bottleneck', include_top, weights,
                   input_tensor, input_shape, pooling, classes, **kwargs)
