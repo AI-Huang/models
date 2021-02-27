@@ -48,22 +48,22 @@ class MLP(nn.Module):
         super(MLP, self).__init__()
 
         self.fc1 = nn.Linear(784, 548)
-        self.bc1 = nn.BatchNorm1d(548)
+        self.bn1 = nn.BatchNorm1d(548)
 
         self.fc2 = nn.Linear(548, 252)
-        self.bc2 = nn.BatchNorm1d(252)
+        self.bn2 = nn.BatchNorm1d(252)
 
         self.fc3 = nn.Linear(252, 10)
 
     def forward(self, x):
         x = x.view((-1, 784))
         h = self.fc1(x)
-        h = self.bc1(h)
+        h = self.bn1(h)
         h = F.relu(h)
         h = F.dropout(h, p=0.5, training=self.training)
 
         h = self.fc2(h)
-        h = self.bc2(h)
+        h = self.bn2(h)
         h = F.relu(h)
         h = F.dropout(h, p=0.2, training=self.training)
 

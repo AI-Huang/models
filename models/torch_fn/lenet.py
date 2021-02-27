@@ -5,20 +5,22 @@
 # @RefLink : https://pytorch.org/tutorials/beginner/blitz/neural_networks_tutorial.html
 # @RefLink : https://github.com/pytorch/examples/blob/master/mnist/main.py
 
-import torch
 from torch import nn
 from torch.nn import functional as F
-from torch.autograd import Variable
 
 
 class LeNet5(nn.Module):
-    """LeNet5 implemented with PyTorch
-    LeNet5 的结构，是 3x conv2d 和 2x FC
+    """LeNet-5 implemented with PyTorch
+    LeNet5 的结构，是 conv2d x3 和 FC x2
+
+    Inputs:
+        padding: padding at the first Conv2d layer to change the input_shape of the element of the batched data. The inputs at first Conv2d layer must be (32, 32, 1) or (32, 32, 3), so set *padding* if necessary, e.g.*padding=2* for MNIST dataset.
+        output_dim: number of top classifiers, e.g., 2, 10.
     """
 
-    def __init__(self, output_dim=10):
+    def __init__(self, padding=0, output_dim=10):
         super().__init__()
-        self.conv1 = nn.Conv2d(1, 6, 5, padding=2)  # padding 28*28 to 32*32
+        self.conv1 = nn.Conv2d(1, 6, 5, padding=padding)
         self.conv2 = nn.Conv2d(6, 16, 5)
         self.fc1 = nn.Linear(16*5*5, 120)
         self.fc2 = nn.Linear(120, 84)
@@ -39,5 +41,3 @@ class LeNet5(nn.Module):
         for s in size:
             num_features *= s
         return num_features
-
-
